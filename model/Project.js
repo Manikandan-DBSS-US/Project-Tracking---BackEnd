@@ -18,11 +18,11 @@ const ProjectSchema = new mongoose.Schema(
       required: [true, "Please provide client name"],
     },
     projectStartDate: {
-      type: String,
+      type: Date,
       required: [true, "Please provide project start date"],
     },
     projectEndDate: {
-      type: String,
+      type: Date,
       required: [true, "Please provide project end date"],
     },
     technologiesUsed: {
