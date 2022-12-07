@@ -1,4 +1,5 @@
 import User from "../model/User.js";
+import moment from 'moment'
 import {
   BadRequestError,
   NotFoundError,
@@ -14,7 +15,6 @@ import {
 
 const register = async (req, res) => {
   const {
-    userId,
     userName,
     firstName,
     lastName,
@@ -27,7 +27,6 @@ const register = async (req, res) => {
     isActive,
   } = req.body;
   if (
-    !userId ||
     !userName ||
     !firstName ||
     !lastName ||
@@ -40,12 +39,15 @@ const register = async (req, res) => {
     throw new BadRequestError("Please provide all values");
   const userExist = await User.findOne({ email });
   if (userExist) throw new BadRequestError("Email already in use");
+  const userNameExist = await User.findOne({ userName });
+  if (userExist) throw new BadRequestError("User Name already in use");
+
   if (password.length < 6)
     throw new BadRequestError("Password must be more than 6 characters");
   const hashedPassword = await hashPassword(password);
   console.log({ hashedPassword });
+
   const user = await User.create({
-    userId,
     userName,
     firstName,
     lastName,
@@ -111,7 +113,6 @@ const getSpecificUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id } = req.params;
   const {
-    userId,
     firstName,
     lastName,
     email,
@@ -124,7 +125,6 @@ const updateUser = async (req, res) => {
   const user = await User.findOne({ _id: id });
   if (!user) throw new NotFoundError(`No User with id :${id}`);
   if (
-    !userId ||
     !firstName ||
     !lastName ||
     !email ||
@@ -137,7 +137,6 @@ const updateUser = async (req, res) => {
   const updatedUser = await User.findOneAndUpdate(
     { _id: id },
     {
-      userId,
       firstName,
       lastName,
       email,
@@ -155,12 +154,11 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const user = await User.findOne({ _id: id });
   if (!user) throw new NotFoundError(`No User with id :${id}`);
-  const deletedUser = await User.findOneAndDelete({_id:id})
-  res.status(StatusCodes.OK).json({ deleteUser });
-
+  const deletedUser = await User.findOneAndDelete({ _id: id });
+  res.status(StatusCodes.OK).json({ deletedUser });
 };
 
 export {
@@ -171,5 +169,5 @@ export {
   getAlluser,
   getSpecificUser,
   updateUser,
-  deleteUser
+  deleteUser,
 };

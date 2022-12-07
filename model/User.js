@@ -3,16 +3,9 @@ import validator from "validator";
 
 const UserSchema = new mongoose.Schema(
   {
-    userId: {
-      type: Number,
-      trim: true,
-      unique: true,
-      required: [true, "Please provide id"],
-    },
     userName: {
       type: String,
       required: [true, "Please provide username"],
-      unique: true, 
     },
     firstName: {
       type: String,
@@ -33,7 +26,6 @@ const UserSchema = new mongoose.Schema(
         validator: validator.isEmail,
         message: "Please provide valid email",
       },
-      unique: true,
     },
     password: {
       type: String,

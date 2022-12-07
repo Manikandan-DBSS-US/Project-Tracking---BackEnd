@@ -10,6 +10,7 @@ import notFoundMiddleware from "./middleware/not-found.js";
 
 import authRouter from "./router/authRouter.js";
 import projectRouter from "./router/projectRouter.js";
+import taskRouter from './router/taskRouter.js'
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 
 app.use("/api/v1/user", authRouter);
 app.use("/api/v1/project", projectRouter);
+app.use("/api/v1/task", taskRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
