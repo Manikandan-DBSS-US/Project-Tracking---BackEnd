@@ -76,7 +76,7 @@ const deleteTask = async (req, res) => {
   const { id } = req.params;
   const task = await Task.findOne({ _id: id });
   if (!task) throw new NotFoundError(`No User with id :${id}`);
-  const deleteTask = await User.findOneAndDelete({ _id: id });
+  const deleteTask = await Task.findOneAndDelete({ _id: id });
   res.status(StatusCodes.OK).json({ deleteTask });
 };
 
