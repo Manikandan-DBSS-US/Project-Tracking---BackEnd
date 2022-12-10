@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/dbConnect.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import notFoundMiddleware from "./middleware/not-found.js";
+import auth from "./middleware/auth.js";
 
 import authRouter from "./router/authRouter.js";
 import projectRouter from "./router/projectRouter.js";
@@ -21,8 +22,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/v1/user", authRouter);
-app.use("/api/v1/project", projectRouter);
-app.use("/api/v1/task", taskRouter);
+app.use("/api/v1/project",projectRouter);
+app.use("/api/v1/task",auth, taskRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

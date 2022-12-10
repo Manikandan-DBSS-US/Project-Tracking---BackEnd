@@ -14,7 +14,7 @@ const refreshTokenValidator = async (token) => {
 
 const accessToken = async (payload) => {
   const token = await jwt.sign(payload, process.env.ACCESS_JWT_KEY, {
-    expiresIn: "1min",
+    expiresIn: "1hr",
   });
   return token;
 };

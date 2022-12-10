@@ -27,6 +27,10 @@ const Task = new mongoose.Schema({
         type:String,
         required:[true,"Please mention status of the verification"],
         enum: ["yes", "no"],
+    },
+    projectId:{
+        type:String,
+        required:[true,"Please provide projectId Name"],
     }
 },{
     timestamps:true

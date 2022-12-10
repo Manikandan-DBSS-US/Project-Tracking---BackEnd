@@ -40,12 +40,10 @@ const register = async (req, res) => {
   const userExist = await User.findOne({ email });
   if (userExist) throw new BadRequestError("Email already in use");
   const userNameExist = await User.findOne({ userName });
-  if (userExist) throw new BadRequestError("User Name already in use");
-
+  if (userNameExist) throw new BadRequestError("User Name already in use");
   if (password.length < 6)
     throw new BadRequestError("Password must be more than 6 characters");
   const hashedPassword = await hashPassword(password);
-  console.log({ hashedPassword });
 
   const user = await User.create({
     userName,
@@ -71,16 +69,16 @@ const login = async (req, res) => {
   const isPasswordCorrect = await hashValidator(password, userExist.password);
   if (!isPasswordCorrect)
     throw new UnAuthenticatedError("Enter correct password");
-  const refresh_token = await refreshToken({ id: userExist._id });
-  console.log({ refresh_token, userExist });
+  // const refresh_token = await refreshToken({ id: userExist._id });
+  // console.log({ refresh_token, userExist });
 
-  res.cookie("refreshtoken", refresh_token, {
-    httpOnly: true,
-    path: "/api/v1/user/refresh_token",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-  res.status(StatusCodes.CREATED).json({ userExist });
+  // res.cookie("refreshtoken", refresh_token, {
+  //   httpOnly: true,
+  //   path: "/api/v1/user/refresh_token",
+  //   maxAge: 7 * 24 * 60 * 60 * 1000,
+  // });
+  const access_token = await accessToken({ id: userExist._id });
+  res.status(StatusCodes.CREATED).json({ userExist,access_token });
 };
 
 const getAccessToken = async (req, res) => {
